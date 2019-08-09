@@ -1,0 +1,11 @@
+{
+    "name": "md/router",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dmitry Marov",
+            "email": "d.marov94@gmail.com"
+        }
+    ],
+    "require": {}
+}
