@@ -14,9 +14,16 @@ class Route implements Interfaces\Route
     {
         $methods = new Enums\Method;
         if (!$methods->has($method))
-            throw new \Exception("invalid method specified");
+            throw new Exceptions\InvalidMethod;
 
-    
+        $this->method = $method;
+        $this->urlTemplate = $urlTemplate;
+        $this->action = $action;
+
     }
 
+    public function call() : void {
+
+        call_user_func($this->action);
+    }
 }

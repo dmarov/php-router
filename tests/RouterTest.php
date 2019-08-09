@@ -13,7 +13,7 @@ class RouterTest extends TestCase
     /**
      * @test
      */
-    public function canBeInstantiated(): void
+    public function canBeInstantiated() : void
     {
 
         $router = new Router("/api");
@@ -23,7 +23,7 @@ class RouterTest extends TestCase
     /**
      * @test
      */
-    public function canBeStarted(): void
+    public function canBeStarted() : void
     {
 
         $router = new Router("/api");
@@ -34,15 +34,16 @@ class RouterTest extends TestCase
     /**
      * @test
      */
-    public function performsSimpleTemplateAction(): void
+    public function performsSimpleTemplateAction() : void
     {
 
         $router = new Router("GET", "/api");
 
         $var = false;
 
-        $action = function () use ($var)
+        $action = function ()
         {
+            global $var;
             $var = true;
         };
 
