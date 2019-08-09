@@ -7,8 +7,13 @@ namespace Md\Router;
 class Router implements Interfaces\Router
 {
 
-    public function start() {
+    public function add(Interfaces\Route $route) : void
+    {
     
     }
 
+    public function start() : void
+    {
+    
+    }
 }

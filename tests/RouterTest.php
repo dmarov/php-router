@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Error\Error;
 
 use Md\Router\Router;
+use Md\Router\Route;
 
 class RouterTest extends TestCase
 {
@@ -15,7 +16,7 @@ class RouterTest extends TestCase
     public function canBeInstantiated(): void
     {
 
-        $router = new Router("/api/messages?offset=0&limit=10");
+        $router = new Router("/api");
 
     }
 
@@ -25,9 +26,31 @@ class RouterTest extends TestCase
     public function canBeStarted(): void
     {
 
-        $router = new Router("/api/messages?offset=0&limit=10");
+        $router = new Router("/api");
         $router->start();
 
     }
 
+    /**
+     * @test
+     */
+    public function performsSimpleTemplateAction(): void
+    {
+
+        $router = new Router("GET", "/api");
+
+        $var = false;
+
+        $action = function () use ($var)
+        {
+            $var = true;
+        };
+
+        $router->add(new Route("GET", "/api", $action));
+
+        $router->start();
+
+        $this->assertEquals($var, true);
+
+    }
 }
