@@ -3,17 +3,31 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Error\Error;
 
 use Md\Router\Router;
 
-class RouterTest
+class RouterTest extends TestCase
 {
-    public function routerCanBeInstantiated(): void
+    /**
+     * @test
+     */
+    public function canBeInstantiated(): void
     {
-        $this->expectException(\Exception::class);
-        new Router("/api/messages?offset=0&limit=10");
-    
+
+        $router = new Router("/api/messages?offset=0&limit=10");
+
     }
 
+    /**
+     * @test
+     */
+    public function canBeStarted(): void
+    {
+
+        $router = new Router("/api/messages?offset=0&limit=10");
+        $router->start();
+
+    }
 
 }
