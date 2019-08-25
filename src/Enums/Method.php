@@ -2,7 +2,8 @@
 
 namespace Md\Router\Enums;
 
-class Method extends Enum {
+class Method extends Enum
+{
 
     const GET = 0;
     const POST = 1;

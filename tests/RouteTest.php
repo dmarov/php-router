@@ -16,7 +16,7 @@ class RouteTest extends TestCase
     public function canBeInstantiated() : void
     {
 
-        $route = new Route("GET", "/api/messages/{id}/info", function() : void {});
+        $route = new Route("GET", "/api/messages/{id}/info", function () : void {});
 
     }
 
@@ -27,7 +27,7 @@ class RouteTest extends TestCase
     {
 
         $this->expectException(Exceptions\InvalidMethod::class);
-        $route = new Route("UNKNOWN", "/api", function() : void {});
+        $route = new Route("UNKNOWN", "/api", function () : void {});
 
     }
 

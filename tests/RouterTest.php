@@ -31,23 +31,57 @@ class RouterTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
-    public function performsSimpleTemplateAction() : void
+    public function performsSimpleTemplateAction1() : void
     {
 
         $router = new Router("GET", "/api");
 
-        $var = false;
+        $filter = new TemplateFilter([
+            'method' => "^(GET|POST)$",
+            'template' => '/api/messages/{id}',
+        ]);
 
-        $action = function ()
-        {
-            global $var;
-            $var = true;
+        $actionVerify = function (Context $ctx) {
+            echo "jwt verified";
+            $ctx->next();
         };
 
-        $router->add(new Route("GET", "/api", $action));
+        $route = new Route($filter, $actionVerify);
+
+        $router->add($route);
+
+        $router->start();
+
+        $this->assertEquals($var, true);
+
+    }
+
+    /**
+     * @test
+     */
+    public function performsSimpleTemplateAction2() : void
+    {
+
+        $router = new Router("GET", "/api");
+
+        $filter = new TemplateFilter([
+            'method' => "^(GET|POST)$",
+            'template' => '/api/messages/{id}',
+        ]);
+
+        $actionVerify = function (Context $ctx) {
+            echo "jwt verified";
+            $ctx->next();
+        };
+
+        $actionProcess = function (Context $ctx) {
+            echo "Hello World";
+            $ctx->nextRoute();
+        };
+
+        $route = new Route($filter, [ $actionVerify, $actionProcess ]);
+
+        $router->add($route);
 
         $router->start();
 

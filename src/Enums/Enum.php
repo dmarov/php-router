@@ -2,9 +2,11 @@
 
 namespace Md\Router\Enums;
 
-class Enum {
+class Enum
+{
 
-    public final static function has($name) : bool {
+    public final static function has($name) : bool
+    {
 
         $reflection = new \ReflectionClass(get_called_class());
         return $reflection->hasConstant($name);
