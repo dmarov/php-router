@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Md\Router;
+namespace Md\Router\Filters;
 
-class RegexFilter implements Interfaces\Filter
+use Md\Router\Interfaces;
+
+class Template implements Interfaces\Filter
 {
     public function __construct($params)
     {

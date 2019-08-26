@@ -2,7 +2,7 @@
 
 namespace Md\Router\Interfaces;
 
-interface Filter
+interface MethodFilter extends Filter
 {
 
     public function match($data) : bool;

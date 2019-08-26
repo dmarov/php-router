@@ -7,11 +7,19 @@ namespace Md\Router;
 class Router implements Interfaces\Router
 {
 
+    private $params;
     private $route;
+
+    public function __construct($params)
+    {
+
+        $this->params = $params;
+
+    }
 
     public function add(Interfaces\Route $route) : void
     {
-    
+
         $this->route = $route;
     }
 
