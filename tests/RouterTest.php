@@ -33,7 +33,7 @@ class RouterTest extends TestCase
 
         $router = new Router([
             'method' => 'GET',
-            'path' => "/api/messages/123?expand=users,alike"
+            'path' => "/api/messages/123"
         ]);
 
         $router->start();
@@ -50,100 +50,98 @@ class RouterTest extends TestCase
 
         $path = new Path\Templated('/api/messages/{id}', 'api:message');
         $method = new Method\Regex("^(?:GET|POST)$");
-        $method = new Method\OneOf('GET', 'POST');
-        $method = new Method\Str('GET');
-        /* $filter = new Filter("^(?:GET|POST)$", $path); */
-
-        $actionVerify = function (Context $ctx) {
-            echo "jwt verified";
-            $ctx->next();
-            $ctx->nextRoute();
-        };
-
-        $route = new Route($filter, $actionVerify);
-
-        $router->add($route);
-        $router->add([ $method, $path ], $actionVerify);
-
-        $router->start();
-
-        /* $this->assertEquals($var, true); */
-
-    }
-
-    /**
-     * @test
-     */
-    public function performsSimpleTemplateAction2() : void
-    {
-
-        $router = new Router("GET", "/api");
-
-        $filter = new TemplateFilter([
-            'method' => "^(GET|POST)$",
-            'template' => '/api/messages/{id}',
-        ]);
+        $method = new Method\AnyOf('GET', 'POST');
+        $method = new Method\Simple('GET');
 
         $actionVerify = function (Context $ctx) {
             echo "jwt verified";
             $ctx->next();
         };
 
-        $actionProcess = function (Context $ctx) {
-            echo "Hello World";
+        $actionSomeOther = function (Context $ctx) {
+            echo "jwt verified";
             $ctx->next();
         };
 
-        $route = new Route($filter, [ $actionVerify, $actionProcess ]);
-
-        $router->add($route);
+        $router->add([ $method, $path ],
+            $actionVerify,
+            $actionSomeOther
+        );
 
         $router->start();
-
-        $this->assertEquals($var, true);
 
     }
 
     /**
      * @test
      */
-    public function moduleExample() : void
+    public function canBeMounted() : void
     {
 
-        /* class Module extends Routable { */
+        class Module extends Routable
+        {
 
-        /*     protected $router; */
+            protected $router;
 
-        /*     function __construct() { */
-        /*         $this->router = new Router; */
+            function __construct()
+            {
 
-        /*         $filter = new Filters\Temlate([ */
-        /*             'method' => 'GET', */
-        /*             'template' => '/messages', */
-        /*         ]); */
+                $this->router = new Router;
+                $get = new Method\AnyOf('GET');
+                $post = new Method\AnyOf('POST');
+                $delete = new Method\AnyOf('DELETE');
 
-        /*         $route = new Route($filter, [$this, 'auth'], [$this, 'getMessages']); */
-        /*         $router->add($route); */
+                $messages = new Path\Simple("/messages", 'api:messages');
+                $message = new Path\Templated("/messages/{id}". 'api:message');
+                $all = new Path\RegEx("/\/.*/");
 
+                $this->router->add([ $all ], [ $this, 'initUser' ]);
 
+                $this->router->add([ $get, $messages ],
+                    [ $this, 'getMessages' ]
+                );
 
-            
-        /*     } */
+                $this->router->add([ $post, $messages ],
+                    [ $this, 'verifyUser' ],
+                    [ $this, 'appendMessage' ]
+                );
 
-        /*     function getRouter() { */
-            
-        /*     } */
+                $this->router->add([ $delete, $message ],
+                    [ $this, 'verifyUser' ],
+                    [ $this, 'deleteMessage' ]
+                );
+            }
 
-        /*     function auth() { */
-            
-        /*     } */
+            function verifyUser(Context $ctx)
+            {
+
+                $isVerified = true;
+
+                if ($isVerified)
+                    $ctx->next();
+                else $ctx->nextRoute();
+            }
         
-        /*     function getMessages() { */
+            function getMessages(Context $ctx)
+            {
             
-        /*     } */
-        /* } */
+            }
 
-        /* $router->mount('/module', new Module); */
+            function appendMessage(Context $ctx)
+            {
+            
+            }
+
+            function deleteMessage(Context $ctx)
+            {
+            
+            }
+        }
+
+        $router = new Router([]);
+        $base = new Path\Simple("/api/feedback");
+        $router->extend($base, new Module);
 
     }
+
 }

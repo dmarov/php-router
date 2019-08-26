@@ -2,10 +2,13 @@
 
 namespace Md\Router\Interfaces;
 
-interface Router {
-
+interface Router
+{
 
     public function start() : void;
 
-    public function add(Route $route) : void;
+    public function add(array $filters, callable ...$actions) : void;
+
+    public function mount(string $base) : void;
+
 }

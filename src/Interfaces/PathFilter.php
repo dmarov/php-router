@@ -5,6 +5,6 @@ namespace Md\Router\Interfaces;
 interface PathFilter extends Filter
 {
 
-    public function match($data) : bool;
+    public function match(string $data) : bool;
 
 }
