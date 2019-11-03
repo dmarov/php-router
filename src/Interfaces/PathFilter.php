@@ -7,4 +7,6 @@ interface PathFilter extends Filter
 
     public function match(string $data) : bool;
 
+    public function toString() : string;
+
 }
