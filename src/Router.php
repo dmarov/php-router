@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Md\Router;
 
-class Router implements Interfaces\Router
+class Router
 {
 
     private $params;
     private $route;
 
-    public function __construct($params)
+    public function __construct($params = [])
     {
 
         $this->params = $params;
